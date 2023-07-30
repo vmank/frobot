@@ -1,0 +1,249 @@
+:root {
+	--white: #FFFFFF;
+	--black: #000000;
+	--grey: #AFAFAF;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.m-4 { margin: 4px; }
+.m-8 { margin: 8px; }
+.m-16 { margin: 16px; }
+.m-24 { margin: 24px; }
+.m-32 { margin: 32px; }
+
+.mb-4 { margin-bottom: 4px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-32 { margin-bottom: 32px; }
+
+.mt-4 { margin-top: 4px; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+
+.ml-4 { margin-left: 4px; }
+.ml-8 { margin-left: 8px; }
+.ml-16 { margin-left: 16px; }
+.ml-24 { margin-left: 24px; }
+.ml-32 { margin-left: 32px; }
+
+.mr-4 { margin-right: 4px; }
+.mr-8 { margin-right: 8px; }
+.mr-16 { margin-right: 16px; }
+.mr-24 { margin-right: 24px; }
+.mr-32 { margin-right: 32px; }
+
+
+.p-4 { padding: 4px; }
+.p-8 { padding: 8px; }
+.p-16 { padding: 16px; }
+.p-24 { padding: 24px; }
+.p-32 { padding: 32px; }
+
+.pb-4 { padding-bottom: 4px; }
+.pb-8 { padding-bottom: 8px; }
+.pb-16 { padding-bottom: 16px; }
+.pb-24 { padding-bottom: 24px; }
+.pb-32 { padding-bottom: 32px; }
+
+.pt-4 { padding-top: 4px; }
+.pt-8 { padding-top: 8px; }
+.pt-16 { padding-top: 16px; }
+.pt-24 { padding-top: 24px; }
+.pt-32 { padding-top: 32px; }
+
+.pl-4 { padding-left: 4px; }
+.pl-8 { padding-left: 8px; }
+.pl-16 { padding-left: 16px; }
+.pl-24 { padding-left: 24px; }
+.pl-32 { padding-left: 32px; }
+
+.pr-4 { padding-right: 4px; }
+.pr-8 { padding-right: 8px; }
+.pr-16 { padding-right: 16px; }
+.pr-24 { padding-right: 24px; }
+.pr-32 { padding-right: 32px; }
+
+
+
+.extension-container {
+	background-color: var(--white);
+	width: 350px;
+	display: flex;
+	flex-direction: column;
+}
+
+.extension-header {
+	padding: 24px;
+	box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.extension-body {
+	padding: 24px;
+	background-color: rgba(180, 180, 180, 0.2);
+}
+
+.extension-body * {
+	display: block;
+}
+
+
+
+.input label {
+	font-size: 13px;
+}
+
+input {
+	background-color: var(--white);
+	border: 1px solid var(--grey);
+    padding: 6px;
+	font-size: 14px;
+}
+
+.input input:focus,
+.input input:focus-visible {
+	background-color: var(--white);
+	outline: none;
+}
+
+.input #add {
+    align-items: center;
+	background-color: var(--white);
+	border: 1px solid var(--grey);
+	border-left: 0;
+	box-sizing: content-box;
+	color: var(--black);
+	display: flex;
+	font-size: 12px;
+    font-weight: 600;
+	height: 16px;
+	padding: 6px;
+}
+
+.input.item-name input {
+	flex: 1;
+	border-radius: 4px 0 0 4px;
+}
+
+.input.item-name button {
+	border-radius: 0 4px 4px 0;
+}
+
+
+
+.refresh-interval input:focus,
+.refresh-interval input:focus-visible {
+	background-color: var(--white);
+	outline: none;
+}
+
+.refresh-interval *.active {
+	background-color: #dfdffa;
+}
+
+.refresh-interval #auto {
+	border: 1px solid var(--grey);
+	border-right: none;
+	border-radius: 4px 0 0 4px;
+	padding: 7px 10px;
+}
+
+.refresh-interval #manual {
+	border: 1px solid var(--grey);
+	border-left: none;
+	border-radius: 0 4px 4px 0;
+	padding: 7px 10px;
+	width: 40px;
+	position: relative;
+}
+
+.refresh-interval #manual input {
+	border: none;
+	background-color: #f0f0f0;
+	padding: 0;
+	width: calc(100% - 14px);
+	text-align: center;
+	font-size: 12px;
+}
+
+.refresh-interval #manual:not(.active)::before {
+	content: "Manual";
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: absolute;
+}
+
+.refresh-interval #manual.active::before {
+	content: "ms";
+	top: 50%;
+	right: 4px;
+	transform: translateY(-50%);
+	position: absolute;
+}
+
+.refresh-interval #manual.active input {
+	background-color: #dfdffa;
+}
+
+
+
+.quantity input:focus,
+.quantity input:focus-visible {
+	background-color: var(--white);
+	outline: none;
+}
+
+.quantity *.active {
+	background-color: #dfdffa;
+}
+
+.quantity #auto {
+	border: 1px solid var(--grey);
+	border-right: none;
+	border-radius: 4px 0 0 4px;
+	padding: 7px 10px;
+}
+
+.quantity #manual {
+	border: 1px solid var(--grey);
+	border-left: none;
+	border-radius: 0 4px 4px 0;
+	padding: 7px 10px;
+	width: 40px;
+	position: relative;
+}
+
+.quantity #manual input {
+	border: none;
+	background-color: #f0f0f0;
+	padding: 0;
+	width: calc(100% - 14px);
+	text-align: center;
+	font-size: 12px;
+}
+
+.quantity #manual:not(.active)::before {
+	content: "Manual";
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: absolute;
+}
+
+.quantity #manual.active::before {
+	content: "ms";
+	top: 50%;
+	right: 4px;
+	transform: translateY(-50%);
+	position: absolute;
+}
+
+.quantity #manual.active input {
+	background-color: #dfdffa;
+}

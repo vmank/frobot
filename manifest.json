@@ -1,10 +1,27 @@
 {
 	"manifest_version": 3,
 	"name": "Funko Checkout Boost",
-	"description": "Assist buyers to reach checkout during high demand releases",
+	"description": "Assist buyers in completing their checkout during high demand releases",
 	"version": "1.0",
+	"permissions": ["webNavigation", "notifications", "tabs", "scripting"],
 	"action": {
-		"default_popup": "index.html",
+		"default_popup": "assets/index.html",
 		"default_icon": "logo.png"
-	}
+	},
+	"background": {
+		"service_worker": "scripts/service-worker.js"
+	},
+	"content_scripts": [
+		{
+			"js": ["scripts/content-script.js"],
+			"world": "ISOLATED",
+			"run_at": "document_idle",
+			"matches": [
+				"<all_urls>"
+			]
+		}
+	],
+	"host_permissions": [
+        "<all_urls>"
+    ]
 }
