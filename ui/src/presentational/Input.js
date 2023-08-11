@@ -1,22 +1,37 @@
-import React, { useContext, useEffect, useImperativeHandle, useState } from "react";
+import React, { useContext, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { editItem, savedItems } from "../store/extensionSlice";
+import { uuid } from 'uuidv4';
 
-const Input = React.forwardRef(({ label, defaultValue, children, className = '' }, ref) => {
-    const [value, setValue] = useState(defaultValue);
+const Input = React.forwardRef(({ label = '', value, children, onChange, className = '' }, ref) => {
+    const inputRef = useRef();
+    const dispatch = useDispatch();
+    const savedItemsState = useSelector(savedItems);
 
     useImperativeHandle(ref, () => ({
-        setValue: (val) => {
-            setValue(val);
-        },
-        getValue: () => {
-            return value;
-        }
-    }));
+        focus: () => inputRef.current.focus()
+    }))
+
+    // let editPayload = {
+    //     uuid: '12345',
+    //     item: {
+    //         uuid: '12345',
+    //         name: 'Going Going',
+    //         qty: '5'
+    //     }
+    // }
+
+    // console.log(savedItemsState);
+
+    // useEffect( () => {
+    //     dispatch(editItem(editPayload));
+    // }, [])
 
     return(
         <div className={`input ${className}`}>
-            <label for="item-name" className="mb-8">{label}</label>
-            <div style={{display: 'flex', alignItems: 'center'}}>
-                <input id="item-name" value={value} onChange={(e) => setValue(e.target.value)} />
+            {label ? <label for="item-name" className="mb-8">{label}</label> : null}
+            <div className="input-container" style={{display: 'flex', alignItems: 'center'}}>
+                <input ref={inputRef} id="item-name" value={value} onChange={(e) => onChange(e.target.value)} />
                 {children}
             </div>
         </div>

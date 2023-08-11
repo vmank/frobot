@@ -1,34 +1,48 @@
 /*global chrome*/
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from './presentational/Input';
 import Interval from './presentational/Interval';
-
-let state = {
-    items: [
-        {
-            name: 'Going Merry',
-            qty: '2'
-        }
-    ],
-    refreshInterval: {
-        auto: true,
-        interval: '200'
-    },
-    autoCheckout: true,
-    checkoutConfirmation: true
-}
+import ItemName from './presentational/ItemName';
+import List from './presentational/List/List';
+import { createActiveTab, getActiveTab } from './helpers';
+import { useDidUpdateEffect } from './hooks';
+import InvalidTab from './presentational/InvalidTab';
+import { useDispatch } from 'react-redux';
+import { setCompleteLoadingTime, setRefreshInterval, setStartLoadingTime } from './store/extensionSlice';
 
 function App() {
-	const [items, setItems] = useState([]);
+	const [activeTab, setActiveTab] = useState(null);
+	const [validTab, setValidTab] = useState(false);
 
-	const onClick = () => {
-		// chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
-		// 	var activeTab = tabs[0];
-		// 	chrome.tabs.sendMessage(activeTab.id, {"message": "start"});
-		// });
+	const dispatch = useDispatch();
 
-		chrome.runtime.sendMessage({reload: true});
+	useEffect( () => {
+		getActiveTab(chrome, setActiveTab);
+	}, [] )
+
+	useDidUpdateEffect( () => {
+		if(activeTab !== null && activeTab?.url?.includes('funkoeurope.com')) {
+			setValidTab(true);
+
+			chrome.storage.local.get(["startLoadingTime", "completeLoadingTime"]).then((result) => {
+				dispatch(setStartLoadingTime(result?.startLoadingTime));
+				dispatch(setCompleteLoadingTime(result?.completeLoadingTime));
+
+				if(result?.completeLoadingTime - result?.startLoadingTime > 0) {
+					dispatch(setRefreshInterval(`${result?.completeLoadingTime - result?.startLoadingTime}`));
+				} else {
+					dispatch(setRefreshInterval('-'));
+				}
+			});
+		} else {
+			setValidTab(false);
+		}
+	}, [activeTab] )
+
+
+	const onLinkClick = (url) => {
+		createActiveTab(chrome, url);
 	}
 
 	return (
@@ -38,21 +52,28 @@ function App() {
 			</div>
 
 			<div className='extension-body'>
-				<div className='item-name mb-16'>
-					<Input className="item-name" label={'Item name'} >
-						<button id='add'>Add</button>
-					</Input>
-				</div>
+				{validTab ?
+					<>
+						<div className='item-name mb-16'>
+							<ItemName />
+						</div>
 
-				<div className='refresh-interval'>
-					<Interval />
-				</div>
+						<List />
+
+						<div className='refresh-interval'>
+							<Interval />
+						</div>
+					</>
+					:
+					<InvalidTab onLinkClick={onLinkClick} />
+				}
+
 
 				<div>
 
 				</div>
+				{/* autocheckout */}
 				{/* confirm before checkout? */}
-				{/* <button onClick={onClick}>Click me</button> */}
 			</div>
 		</div>
 	);

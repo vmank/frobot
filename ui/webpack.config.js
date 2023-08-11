@@ -1,4 +1,5 @@
 const path = require('path');
+const { ProvidePlugin } = require('webpack');
 
 module.exports = {
     entry: path.resolve(__dirname, 'src', 'index.js'),
@@ -9,6 +10,11 @@ module.exports = {
     devServer: {
         contentBase: path.resolve(__dirname, '../build'),
     },
+    plugins: [
+        new ProvidePlugin({
+            process: 'process/browser'
+       })
+    ],
     module: {
         rules: [
             {
@@ -25,4 +31,9 @@ module.exports = {
         ]
     },
     watch: true,
+    resolve: {
+        fallback: {
+          "util": require.resolve("util/")
+        }
+    },
 }

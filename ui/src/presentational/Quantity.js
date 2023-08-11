@@ -1,42 +1,29 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
+import Input from "./Input";
 
-const Quantity = React.forwardRef(({ defaultValue, children, className = '' }, ref) => {
-    const [max, setMax] = useState(true);
-    const [quantity, setQuantity] = useState('');
+const Quantity = React.forwardRef(({ quantity, setQuantity }, ref) => {
 
-    const inputRef = useRef();
-
-    useEffect( () => {
-        setQuantity('');
-    }, [max]);
-
-    useImperativeHandle(ref, () => ({
-        setQuantity: (val) => {
-            setQuantity(val);
-        },
-        getValue: () => {
-            return quantity;
-        }
-    }));
-
-    const handleClickMax = () => {
-        setMax(true);
+    const onDecreaseClick = () => {
+        if(quantity > 0) setQuantity(quantity - 1);
     }
 
-    const handleClickManual = () => {
-        inputRef.current.focus();
-        setMax(false);
+    const onIncreaseClick = () => {
+        setQuantity(quantity + 1);
+    }
+
+    const toggleMax = () => {
+        if(quantity === 'MAX') setQuantity('1');
+        else setQuantity('MAX');
     }
 
     return(
         <div className="quantity">
-            <label className="mb-8">Qty</label>
-            <div className="quantity-container" style={{display: 'flex', alignItems: 'center'}}>
-                <div id="max" className={`pointer ${max ? 'active' : ''}`} onClick={handleClickMax}>Max</div>
-
-                <div id="manual" className={`pointer ${!max ? 'active' : ''}`} onClick={handleClickManual}>
-                    <input ref={inputRef} value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
-                </div>
+            <div className="inner-container">
+                <button className="decrease pointer" onClick={onDecreaseClick}>-</button>
+                <Input value={quantity} onChange={setQuantity}>
+                    <span className={`max pointer ${quantity === 'MAX' ? 'active' : ''}`} onClick={toggleMax}>MAX</span>
+                </Input>
+                <button className="increase pointer" onClick={onIncreaseClick}>+</button>
             </div>
         </div>
     )

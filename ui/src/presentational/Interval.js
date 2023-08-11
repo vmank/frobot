@@ -1,23 +1,28 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { completeLoadingTime, refreshInterval, startLoadingTime, setRefreshInterval } from "../store/extensionSlice";
 
-const Interval = React.forwardRef(({ defaultValue, children, className = '' }, ref) => {
+const Interval = React.forwardRef((props, ref) => {
     const [auto, setAuto] = useState(true);
-    const [refreshInterval, setRefreshInterval] = useState('');
+    const startLoadingTimeState = useSelector(startLoadingTime);
+    const completeLoadingTimeState = useSelector(completeLoadingTime);
+    const refreshIntervalState = useSelector(refreshInterval);
+
+    const dispatch = useDispatch();
 
     const inputRef = useRef();
 
     useEffect( () => {
-        setRefreshInterval('');
-    }, [auto]);
-
-    useImperativeHandle(ref, () => ({
-        setRefreshInterval: (val) => {
-            setRefreshInterval(val);
-        },
-        getValue: () => {
-            return refreshInterval;
+        if(auto) {
+            if(completeLoadingTimeState - startLoadingTimeState > 0) {
+                dispatch(setRefreshInterval(`${completeLoadingTimeState - startLoadingTimeState}`));
+            } else {
+                dispatch(setRefreshInterval('-'));
+            }
+        } else {
+            dispatch(setRefreshInterval(''));
         }
-    }));
+    }, [auto, startLoadingTimeState, completeLoadingTimeState]);
 
     const handleClickAuto = () => {
         setAuto(true);
@@ -31,11 +36,17 @@ const Interval = React.forwardRef(({ defaultValue, children, className = '' }, r
     return(
         <div className="refresh-interval">
             <label className="mb-8">Refresh Interval</label>
-            <div className="interval-container" style={{display: 'flex', alignItems: 'center'}}>
-                <div id="auto" className={`pointer ${auto ? 'active' : ''}`} onClick={handleClickAuto}>Auto</div>
+            <div style={{display: 'flex', gap: 16, alignItems: 'center'}}>
+                <div className="interval-container" style={{display: 'flex', alignItems: 'center'}}>
+                    <div id="auto" className={`pointer ${auto ? 'active' : ''}`} onClick={handleClickAuto}>Auto</div>
 
-                <div id="manual" className={`pointer ${!auto ? 'active' : ''}`} onClick={handleClickManual}>
-                    <input ref={inputRef} value={refreshInterval} onChange={(e) => setRefreshInterval(e.target.value)}/>
+                    <div id="manual" className={`pointer ${!auto ? 'active' : ''}`} onClick={handleClickManual}>
+                        <input ref={inputRef} value={''} onChange={(e) => setRefreshInterval(e.target.value)}/>
+                    </div>
+                </div>
+                <div style={{display: 'flex', gap: 6, alignItems: 'center'}}>
+                    <span>Loading time:</span>
+                    {refreshIntervalState === '-' ? '-' : `${(parseInt(refreshIntervalState)) / 1000}s`}
                 </div>
             </div>
         </div>

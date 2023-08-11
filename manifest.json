@@ -3,9 +3,9 @@
 	"name": "Funko Checkout Boost",
 	"description": "Assist buyers in completing their checkout during high demand releases",
 	"version": "1.0",
-	"permissions": ["webNavigation", "notifications", "tabs", "scripting"],
+	"permissions": ["webNavigation", "notifications", "tabs", "scripting", "storage"],
 	"action": {
-		"default_popup": "assets/index.html",
+		"default_popup": "build/index.html",
 		"default_icon": "logo.png"
 	},
 	"background": {
